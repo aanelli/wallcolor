@@ -1,0 +1,29 @@
+below taken from "http://stackoverflow.com/questions/33396102/change-macs-terminal-theme-using-python":
+You can use the Python subprocess module to call an AppleScript:
+
+#!/usr/bin/python
+
+import subprocess
+
+def asrun(ascript):
+
+    osasc = subprocess.Popen(['osascript', '-'],
+    stdin = subprocess.PIPE, stdout=subprocess.PIPE)
+    return osasc.communicate(ascript)[0]
+
+def asquote(astr):
+
+    ascrpt = astr.replace('"', '" & quote & "')
+    return '"{}"'.format(ascrpt)
+
+ascript = '''
+tell application "Terminal"
+    activate
+    set current settings of tabs of windows to settings set "Pro"
+end tell
+'''
+
+asrun(ascript)
+This will change all of the windows and tabs you currently have open. If you want it do change just one and not the others, or change the window when you launch terminal that's fairly easy to do. It's just a matter of determining which window or tab you want to change and how you are calling the script in the first place. This should give you an idea though of the basic means of how it works — so I've left this example fairly minimal so you can understand the basics of it.
+
+To change the profile, substitute "Pro" with any profile name (even custom versions you've created) that are listed in Terminal.app.
